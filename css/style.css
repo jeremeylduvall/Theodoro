@@ -1,0 +1,21 @@
+span.genericon.genericon-twitter {
+	font-size: 20px;
+}
+
+.tagline {
+	font-size: 14px;
+	font-style: italic;
+}
+
+a:hover {
+	text-decoration: none;
+}
+
+.footercontainer a, .footercontainer {
+	color: #777;
+}
+
+.footercontainer {
+	text-align: center;
+	padding-top: 15px;
+}

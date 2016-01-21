@@ -1,11 +1,16 @@
 var React = require('react');
 var ReactDOM = require('react-dom');
+var Header = require('./header');
+var Footer = require('./footer');
 
 var Hello = React.createClass({
   render: function() {
-    return <h1>
-      Hello there!
-    </h1>
+    return (
+    	<div>
+    		<Header />
+    		<Footer />
+	    </div>
+	  );
   }
 });
 
