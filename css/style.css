@@ -32,8 +32,12 @@ a:hover {
 	display: inline-block;
 }
 
-.glyphicon-play {
+#controls {
 	display: block;
+}
+
+.glyphicon-play, .glyphicon-stop, .glyphicon-pause {
+	display: inline-block;
 	font-size: 40px;
 	padding-top: 10px;
 }

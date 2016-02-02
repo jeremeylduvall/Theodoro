@@ -4,9 +4,11 @@ var React = require('react');
 var Clock = React.createClass({
 	getInitialState: function() {
 	    return {
-	    	minutes: "25",
+	    	minutes: "1",
 	    	seconds: "00",
-	    	rest: "5"
+	    	rest: "5",
+	    	totalWorkTime: "1500",
+	    	playing: false
 	    };
 	},
 
@@ -18,23 +20,40 @@ var Clock = React.createClass({
 		}
 	},
 
+	clockInterval: function() {
+		var interval = setInterval(this.runClock, 50);
+	},
+
 	runClock: function() {
-		if (this.state.seconds === "00") {
-			var seconds = 60;
+		var seconds = this.state.seconds;
+		this.setState({
+			playing: true
+		})
+
+		if (seconds === "00" || seconds === "0") {
+			seconds = 60;
+			var minutes = this.state.minutes - 1;
 			this.setState({
-				seconds: seconds
+				seconds: seconds,
+				minutes: minutes,
 			})
 		}
 
-		var seconds = this.state.seconds;
 		seconds = seconds - 1;
+
 		this.setState({
-			seconds: seconds
+			seconds: seconds,
+			totalTime: (this.state.minutes * 60) + this.state.seconds
 		})
+
+		if (this.state.totalTime === 1) {
+			alert('Time is up');
+			this.stopClock;
+		}
 	},
 
-	playClock: function() {
-		var interval = setInterval(this.runClock, 1000);
+	stopClock: function() {
+		clearInterval(interval);
 	},
 
   render: function() {
@@ -42,12 +61,14 @@ var Clock = React.createClass({
 	  	{
 	  		minutes: "25",
 	  		rest: "5",
-	  		label: "25 min on/5 min off"
+	  		label: "25 min on/5 min off",
+	  		totalTime: "1500"
 	  	},
 	  	{
 	  		minutes: "50",
 	  		rest: "10",
-	  		label: "50 min on/10 min off"
+	  		label: "50 min on/10 min off",
+	  		totalWorkTime: "3000"
 	  	}
  		];
 
@@ -69,7 +90,11 @@ var Clock = React.createClass({
 	    	<br />
 	    	<br />
 	    	<div id="minutes">{this.state.minutes}<span id="label">Minutes</span></div><div id="seconds">{this.state.seconds}<span id="label">Seconds</span></div>
-	    	<div className="glyphicon glyphicon-play" aria-hidden="true" onClick={this.playClock}></div>
+	    	<span id="controls">
+		    	<div className={"glyphicon glyphicon-play " + ( this.state.playing ? "hidden" : "" )} aria-hidden="true" onClick={this.clockInterval}></div>
+		    	<div className={"glyphicon glyphicon-stop " + ( this.state.playing ? "" : "hidden" )} aria-hidden="true" onClick={this.playClock}></div>
+		    	<div className={"glyphicon glyphicon-pause " + ( this.state.playing ? "" : "hidden" )} aria-hidden="true" onClick={this.playClock}></div>
+		    </span>
 	    </div>
 	  );
   }
