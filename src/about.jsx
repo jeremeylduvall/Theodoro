@@ -1,9 +1,12 @@
 var React = require('react');
+var Header = require('./components/header');
+var Footer = require('./components/footer');
 
 var About = React.createClass({
 	render: function() {
 		return (
 			<div>
+				<Header />
 					<p>
 						The now-infamous Pomodoro method is a fantastic way to focus and get work done. It's a pattern typically of 25 minutes of work followed by 5 minutes of rest. If you're curious, you can read a bit more about the actual method here:
 						<br></br>
@@ -22,6 +25,7 @@ var About = React.createClass({
 						<br></br>
 						I'll update this as the project gets closer to completion.
 					</p>
+				<Footer />
 			</div>
 		);
 	}

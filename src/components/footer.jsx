@@ -4,7 +4,7 @@ var ReactDOM = require('react-dom');
 var Footer = React.createClass({
   render: function() {
     return (
-			<nav className="navbar navbar-default navbar-bottom" role="navigation">
+			<nav className="navbar navbar-default navbar-bottom footer" role="navigation">
 			  <div className="footercontainer">
 			  	Created by <a href="http://twitter.com/jeremeyd"><span className="genericon genericon-twitter"></span> @JeremeyD</a> - Read more about this project
 			  </div>

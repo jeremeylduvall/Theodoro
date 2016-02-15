@@ -1,3 +1,15 @@
+/* General */
+
+a:hover {
+	text-decoration: none;
+}
+
+.main {
+	text-align: center;
+}
+
+/* Header & Menu */
+
 span.genericon.genericon-twitter {
 	font-size: 20px;
 }
@@ -7,9 +19,7 @@ span.genericon.genericon-twitter {
 	font-style: italic;
 }
 
-a:hover {
-	text-decoration: none;
-}
+/* Footer */
 
 .footercontainer a, .footercontainer {
 	color: #777;
@@ -20,9 +30,15 @@ a:hover {
 	padding-top: 15px;
 }
 
-.main {
-	text-align: center;
+.navbar-bottom {
+	margin: 20px 20px 0px 20px;
+	position: absolute;
+  right: 0;
+  bottom: 0;
+  left: 0;
 }
+
+/* Clock */
 
 #minutes, #seconds {
 	font-size: 50px;
@@ -42,11 +58,11 @@ a:hover {
 	padding-top: 10px;
 }
 
-.navbar-bottom {
-	margin: 20px;
-}
-
 #label {
 	display: block;
 	font-size: 10px;
+}
+
+.resting {
+	background-color: #00ff00;
 }

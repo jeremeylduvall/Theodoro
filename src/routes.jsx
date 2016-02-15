@@ -8,9 +8,8 @@ var hashHistory = require('react-router/lib/hashHistory');
 
 var Routes = (
 	<Router  history={hashHistory} >
-		<Route path="/" component={Main} >
-			<Route path="about" component={About} />
-		</Route>
+		<Route path="/" component={Main} />
+		<Route path="about" component={About} />
 	</Router>
 );
 
