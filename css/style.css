@@ -33,9 +33,9 @@ span.genericon.genericon-twitter {
 .navbar-bottom {
 	margin: 20px 20px 0px 20px;
 	position: absolute;
-  right: 0;
-  bottom: 0;
-  left: 0;
+	right: 0;
+	bottom: 0;
+	left: 0;
 }
 
 /* Clock */
@@ -63,6 +63,6 @@ span.genericon.genericon-twitter {
 	font-size: 10px;
 }
 
-.resting {
-	background-color: #00ff00;
+.intervalMarker {
+	margin-top: 20px;
 }
