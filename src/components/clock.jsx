@@ -1,10 +1,27 @@
 var Button = require('./button');
 var React = require('react');
 
+var intervalLengths = [
+	{
+		minutes: "25",
+		rest: "5",
+		label: "25 min on/5 min off",
+		totalTime: "1500",
+		option: "short"
+	},
+	{
+		minutes: "50",
+		rest: "10",
+		label: "50 min on/10 min off",
+		totalWorkTime: "3000",
+		option: "long"
+	}
+];
+
 var Clock = React.createClass( {
 	getInitialState: function() {
 		return {
-			minutes: "25",
+			minutes: "2",
 			seconds: "00",
 			totalWorkTime: "1500",
 			playing: false,
@@ -19,14 +36,15 @@ var Clock = React.createClass( {
 		this.completedIntervals = 0;
 	},
 
-	handleTimeChange: function() {
-		this.intervals.forEach( clearInterval );
-
-		if ( this.state.option === "short" ) {
-			this.setLong();
-		} else {
-			this.setShort();
-		}
+	setShort: function() {
+		this.setState( {
+			minutes: "25",
+			seconds: "00",
+			totalTime: "1500",
+			playing: false,
+			option: "short",
+			resting: false
+		} );
 	},
 
 	setLong: function() {
@@ -40,15 +58,14 @@ var Clock = React.createClass( {
 		} );
 	},
 
-	setShort: function() {
-		this.setState( {
-			minutes: "25",
-			seconds: "00",
-			totalTime: "1500",
-			playing: false,
-			option: "short",
-			resting: false
-		} );
+	handleTimeChange: function() {
+		this.intervals.forEach( clearInterval );
+
+		if ( this.state.option === "short" ) {
+			this.setLong();
+		} else {
+			this.setShort();
+		}
 	},
 
 	playClock: function() {
@@ -120,31 +137,15 @@ var Clock = React.createClass( {
 	},
 
 	render: function() {
-		var lengths = [
-			{
-				minutes: "25",
-				rest: "5",
-				label: "25 min on/5 min off",
-				totalTime: "1500",
-				option: "short"
-			},
-			{
-				minutes: "50",
-				rest: "10",
-				label: "50 min on/10 min off",
-				totalWorkTime: "3000",
-				option: "long"
-			}
-		];
 
-		var buttonGroup = lengths.map( function( length ) {
+		var buttonGroup = intervalLengths.map( function( length ) {
 			return (
 				<Button
-				key={ length.minutes }
-				label={ length.label }
-				handleClick={ this.handleTimeChange.bind( this, length.minutes ) }
-				minutes={ length.minutes }
-				classNames={ "btn btn-default " + ( this.state.option === length.option ? "active" : "" ) }
+					key={ length.minutes }
+					label={ length.label }
+					handleClick={ this.handleTimeChange.bind( this, length.minutes ) }
+					minutes={ length.minutes }
+					classNames={ "btn btn-default " + ( this.state.option === length.option ? "active" : "" ) }
 				/>
 			);
 		}.bind( this ) );
