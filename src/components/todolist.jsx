@@ -1,98 +1,181 @@
 var React = require('react');
 var Todo = require('./todo');
+var _ = require('lodash');
 
 var TodoList = React.createClass( {
 	getInitialState: function() {
 		return {
-			taskValue: null,
-			tasks: [],
-			completedTasks: []
+			taskInput: null,
+			incompleteTasks: [],
+			completeTasks: []
 		};
 	},
 
 	componentDidMount: function() {
-		this.tasks = [];
-		this.completedTasks = [];
+		this.incompleteTaskHolder = [];
+		this.completeTaskHolder = [];
+	},
+
+	buildNewTask: function( taskInput ) {
+		return (
+			{
+				taskValue: taskInput,
+				completed: false,
+				editing: false,
+				deleted: false
+			}
+		);
 	},
 
 	resetAddField: function() {
 		this.setState( {
-			taskValue: null
+			taskInput: null
 		} );
 	},
 
 	handleChange: function( e ) {
 		this.setState( {
-			taskValue: e.target.value
+			taskInput: e.target.value
 		} );
 	},
 
 	handleAdd: function () {
-		if ( this.state.taskValue !== null ) {
-			this.tasks.push( this.state.taskValue );
+		if ( this.state.taskInput !== null ) {
+			this.incompleteTaskHolder.push( this.buildNewTask( this.state.taskInput ) );
 		} else {
 			alert( 'You have to type something' );
 		}
 
 		this.setState( {
-			tasks: this.tasks,
+			incompleteTasks: this.incompleteTaskHolder
 		} );
 
 		this.resetAddField();
 	},
 
-	removeTask: function( task ) {
-		var index = this.state.tasks.indexOf( task.props.taskValue );
+	onDelete: function( i ) {
+		// Flip the current task deleted field to true
+		this.incompleteTaskHolder[i].deleted = true;
 
-		if ( index > -1 ) {
-			this.tasks.splice( index, 1 );
-		}
-	},
-
-	deleteItem: function( task ) {
-		this.removeTask( task );
-
+		// Set this.state.incompleteTasks
 		this.setState( {
-			tasks: this.tasks
+			incompleteTasks: this.incompleteTaskHolder
 		} );
 	},
 
-	completeItem: function( task ) {
-		this.removeTask( task );
+	onEdit: function( i ) {
+		// Flip the current task editing field to true
+		this.incompleteTaskHolder[i].editing = true;
 
-		this.completedTasks.push( task.props );
-
+		// Set this.state.incompleteTasks
 		this.setState( {
-			tasks: this.tasks,
-			completedTasks: this.completedTasks
+			incompleteTasks: this.incompleteTaskHolder
 		} );
 	},
 
-	buildTodo: function( task ) {
-		return (
-			<Todo
-				taskValue = { task }
-				key = { this.state.tasks.indexOf( task ) }
-				deleteItem = { this.deleteItem }
-				completedItem = { this.completeItem }
-			/>
-		);
+	onSave: function( i ) {
+		// Flip the current task editing field to true
+		this.incompleteTaskHolder[i].editing = false;
+
+		// Set this.state.incompleteTasks
+		this.setState( {
+			incompleteTasks: this.incompleteTaskHolder
+		} );
+	},
+
+	onComplete: function( i ) {
+		var currentTask;
+
+		// Flip the current task complete field to true
+		this.incompleteTaskHolder[i].completed = true;
+
+		// Store the value of the completed task
+		currentTask = this.incompleteTaskHolder[i];
+
+		// Splice task from incompleteTaskHolder
+		this.incompleteTaskHolder.splice( i, 1 );
+
+		// Add completed todo to coompleteTaskHolder
+		this.completeTaskHolder.push( currentTask );
+
+		// Set this.state.incompleteTasks to remaining incomplete todos
+		this.setState( {
+			incompleteTasks: this.incompleteTaskHolder,
+			completeTasks: this.completeTaskHolder
+		} );
+	},
+
+	onUncheck: function( i ) {
+		var currentTask;
+
+		// Flip the current task complete field to true
+		this.completeTaskHolder[i].completed = false;
+
+		// Store the value of the completed task
+		currentTask = this.completeTaskHolder[i];
+
+		// Splice task from incompleteTaskHolder
+		this.completeTaskHolder.splice( i, 1 );
+
+		// Add completed todo to coompleteTaskHolder
+		this.incompleteTaskHolder.push( currentTask );
+
+		// Set this.state.incompleteTasks to remaining incomplete todos
+		this.setState( {
+			incompleteTasks: this.incompleteTaskHolder,
+			completeTasks: this.completeTaskHolder
+		} );
+	},
+
+	onEditTask: function( event ) {
+		console.log( event );
 	},
 
 	render: function() {
-		if ( this.tasks ) {
-			var taskList = this.state.tasks.map( this.buildTodo );
+		if ( this.state.incompleteTasks ) {
+			var taskList = this.state.incompleteTasks.map( function( task, i ) {
+				if ( task.deleted !== true ) {
+					return (
+						<Todo
+							taskValue={ task.taskValue }
+							key={ _.uniqueId() }
+							editing={ task.editing }
+							completed={ task.completed }
+							onComplete={ this.onComplete.bind( this, i ) }
+							onEdit={ this.onEdit.bind( this, i ) }
+							onDelete={ this.onDelete.bind( this, i) }
+							onSave={ this.onSave.bind( this, i ) }
+							editTask={ this.onEditTask }
+						/>
+					);
+				}
+			}.bind( this ) );
 		}
 
-		if ( this.completedTasks ) {
-			var completedTasks = this.state.completedTasks.map( this.buildTodo );
+		if ( this.state.completeTasks ) {
+			var completeTaskList = this.state.completeTasks.map( function( task, i ) {
+				if ( task.deleted !== true ) {
+					return (
+						<Todo
+							taskValue={ task.taskValue }
+							key={ _.uniqueId() }
+							editing={ task.editing }
+							completed={ task.completed }
+							onComplete={ this.onUncheck.bind( this, i ) }
+							onEdit={ this.onEdit.bind( this, i ) }
+							onDelete={ this.onDelete.bind( this, i) }
+							onSave={ this.onSave.bind( this, i ) }
+						/>
+					);
+				}
+			}.bind( this ) );
 		}
 
 		return (
 			<div>
 				<h2 className="todolist">Todo List</h2>
 				<div className="input-group">
-  				<input type="text" className="form-control" value={ this.state.taskValue } aria-describedby="basic-addon1" onChange={ this.handleChange }></input>
+  				<input type="text" className="form-control" value={ this.state.taskInput } aria-describedby="basic-addon1" onChange={ this.handleChange }></input>
 					<span className="input-group-btn">
 						<button className="btn btn-default" type="button" onClick={ this.handleAdd }>
 							Add
@@ -102,7 +185,7 @@ var TodoList = React.createClass( {
 				<div className="row">
 					<div className="completed col-md-6">
 						<h4>Completed</h4>
-						{ completedTasks }
+						{ completeTaskList }
 					</div>
 					<div className="completed col-md-6">
 						<h4>Incompleted</h4>

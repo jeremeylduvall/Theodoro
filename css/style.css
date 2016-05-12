@@ -81,3 +81,7 @@ span.genericon.genericon-twitter {
 	width: 50%;
 	margin: 20px auto;
 }
+
+.strike {
+	text-decoration: line-through;
+}
