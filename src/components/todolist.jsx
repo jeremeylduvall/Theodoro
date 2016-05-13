@@ -108,8 +108,9 @@ var TodoList = React.createClass( {
 	onUncheck: function( i ) {
 		var currentTask;
 
-		// Flip the current task complete field to true
+		// Flip the current task complete & editing field to false
 		this.completeTaskHolder[i].completed = false;
+		this.completeTaskHolder[i].editing = false;
 
 		// Store the value of the completed task
 		currentTask = this.completeTaskHolder[i];
@@ -127,8 +128,14 @@ var TodoList = React.createClass( {
 		} );
 	},
 
-	onEditTask: function( event ) {
-		console.log( event );
+	onEditTask: function( i, event ) {
+		// Set the task field equal to the event.target.value passed in
+		this.incompleteTaskHolder[i].taskValue = event;
+
+		// Update the state
+		this.setState( {
+			incompleteTasks: this.incompleteTaskHolder
+		} );
 	},
 
 	render: function() {
@@ -138,14 +145,14 @@ var TodoList = React.createClass( {
 					return (
 						<Todo
 							taskValue={ task.taskValue }
-							key={ _.uniqueId() }
+							key={ i }
 							editing={ task.editing }
 							completed={ task.completed }
 							onComplete={ this.onComplete.bind( this, i ) }
 							onEdit={ this.onEdit.bind( this, i ) }
 							onDelete={ this.onDelete.bind( this, i) }
 							onSave={ this.onSave.bind( this, i ) }
-							editTask={ this.onEditTask }
+							editTask={ this.onEditTask.bind( null, i ) }
 						/>
 					);
 				}
@@ -158,7 +165,7 @@ var TodoList = React.createClass( {
 					return (
 						<Todo
 							taskValue={ task.taskValue }
-							key={ _.uniqueId() }
+							key={ i }
 							editing={ task.editing }
 							completed={ task.completed }
 							onComplete={ this.onUncheck.bind( this, i ) }

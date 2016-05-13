@@ -21,7 +21,7 @@ var intervalLengths = [
 var Clock = React.createClass( {
 	getInitialState: function() {
 		return {
-			minutes: "2",
+			minutes: "25",
 			seconds: "00",
 			totalWorkTime: "1500",
 			playing: false,
@@ -95,7 +95,7 @@ var Clock = React.createClass( {
 			playing: true
 		} );
 
-		this.intervals.push( setInterval.apply( null, [ this.playClock, 20 ] ) );
+		this.intervals.push( setInterval.apply( null, [ this.playClock, 1000 ] ) );
 	},
 
 	stopClock: function() {
