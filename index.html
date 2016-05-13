@@ -1,0 +1,115 @@
+<!DOCTYPE html>
+<html lang="en-us">
+  <head>
+    <meta charset="UTF-8">
+    <title>Theodoro by jeremeylduvall</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" type="text/css" href="stylesheets/normalize.css" media="screen">
+    <link href='https://fonts.googleapis.com/css?family=Open+Sans:400,700' rel='stylesheet' type='text/css'>
+    <link rel="stylesheet" type="text/css" href="stylesheets/stylesheet.css" media="screen">
+    <link rel="stylesheet" type="text/css" href="stylesheets/github-light.css" media="screen">
+  </head>
+  <body>
+    <section class="page-header">
+      <h1 class="project-name">Theodoro</h1>
+      <h2 class="project-tagline">Simple React Pomodoro Timer and To-do List in One</h2>
+      <a href="https://github.com/jeremeylduvall/Theodoro" class="btn">View on GitHub</a>
+      <a href="https://github.com/jeremeylduvall/Theodoro/zipball/master" class="btn">Download .zip</a>
+      <a href="https://github.com/jeremeylduvall/Theodoro/tarball/master" class="btn">Download .tar.gz</a>
+    </section>
+
+    <section class="main-content">
+      <h2>
+<a id="introduction" class="anchor" href="#introduction" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>Introduction</h2>
+
+<p>Theodoro is a todo list and Pomodoro timer combination built using React, Gulp, and generic Bootstrap components. If you're unfamiliar, <a href="http://pomodorotechnique.com/">the Pomodoro method</a> is a popular way of working involving 25 minutes of work followed by 5 minutes of rest.</p>
+
+<p>Let's get one thing out of the way first—<strong>the project is pretty ugly.</strong> It's mobile responsive (or it should be), and it uses default Bootstrap components so it's not terrible. I used this project to learn about React not practice my design skills. First, I wanted to build this through default JavaScript methods. Next, I'll translate everything to using Reflux.</p>
+
+<p>The clock component contains two default settings—25 min on/5 min off or 50 min on/10 min off. The todo component does the basics. You should be able to add, edit, and delete todos. It shouldn't allow you to add duplicate todos or create empty ones. There's a snapshot of the project in action at the bottom of this README.</p>
+
+<h2>
+<a id="code-samples" class="anchor" href="#code-samples" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>Code Samples</h2>
+
+<p>I ran into a few typical gotchas while building the todo list. I'll highlight the ones that caused me to scratch my head for a sec.</p>
+
+<h4>
+<a id="keeping-the-todo-component-stateless" class="anchor" href="#keeping-the-todo-component-stateless" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>Keeping the <code>todo</code> component stateless</h4>
+
+<p>The main issue was updating the todo when it was edited. I circumvented that issue using <code>onChange</code> on the <code>input</code> and passing the <code>event.target.value</code> to the <code>editTask</code> prop of the <code>todo</code>. Here's an abbreviated example:</p>
+
+<pre><code>// Todo component
+
+editTask: function( event ) {
+    this.props.editTask( event.target.value );
+},
+
+// in render
+&lt;input type="text" value={ this.props.taskValue } onChange={ this.editTask } /&gt;
+</code></pre>
+
+<p>Then, in Todolist, I could access the value of <code>event.target.value</code>:</p>
+
+<pre><code>// Todolist component
+onEditTask: function( i, event ) {
+    // Set the task field equal to the event.target.value passed in
+    this.incompleteTaskHolder[i].taskValue = event;
+
+    // Update the state
+    this.setState( {
+        incompleteTasks: this.incompleteTaskHolder
+    } );
+},
+
+// in render
+&lt;Todo
+    editTask={ this.onEditTask.bind( null, i ) }
+/&gt;
+</code></pre>
+
+<h4>
+<a id="figuring-out-which-todo-was-being-worked-on" class="anchor" href="#figuring-out-which-todo-was-being-worked-on" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>Figuring out which todo was being worked on</h4>
+
+<p>It seems pretty darn simple, but with todolist holding all of the information about the actual todos, the todo actions (Edit, Save, and Delete) gave me some issues. This actually turned out to be pretty simple, and the Facebook folks even have <a href="https://facebook.github.io/react/tips/expose-component-functions.html">a doc about it</a>. In my case, I just passed in the index value in the <code>.bind()</code> call like this:</p>
+
+<pre><code>&lt;Todo
+    onComplete={ this.onComplete.bind( this, i ) }
+/&gt;
+</code></pre>
+
+<p>Problem solved.</p>
+
+<p>I'm sure I'll run into a ton of additional fun headscratchers when I build Theodoro using Reflux, but this has been a fun little project so far.</p>
+
+<h2>
+<a id="installation" class="anchor" href="#installation" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>Installation</h2>
+
+<p>This should be pretty easy to get up and running locally if you're so inclined:</p>
+
+<ol>
+<li><p><code>git clone https://github.com/jeremeylduvall/Theodoro.git</code></p></li>
+<li><p><code>cd Theodoro</code></p></li>
+<li><p><code>npm install</code></p></li>
+<li><p><code>gulp</code></p></li>
+</ol>
+
+<p>If that doesn't work for some reason or if anything is broken, feel free to let me know on Twitter (<a href="https://github.com/jeremeyd" class="user-mention">@jeremeyd</a>).</p>
+
+<h2>
+<a id="gif" class="anchor" href="#gif" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>GIF</h2>
+
+<p><img src="https://github.com/jeremeylduvall/Theodoro/blob/master/theodoro.gif" alt="Theodoro GIF"></p>
+
+<p>Hat tip to Michael Dyrynda for <a href="http://michaeldyrynda.github.io/readme-generator/">making this README easy to build.</a></p>
+
+      <footer class="site-footer">
+        <span class="site-footer-owner"><a href="https://github.com/jeremeylduvall/Theodoro">Theodoro</a> is maintained by <a href="https://github.com/jeremeylduvall">jeremeylduvall</a>.</span>
+
+        <span class="site-footer-credits">This page was generated by <a href="https://pages.github.com">GitHub Pages</a> using the <a href="https://github.com/jasonlong/cayman-theme">Cayman theme</a> by <a href="https://twitter.com/jasonlong">Jason Long</a>.</span>
+      </footer>
+
+    </section>
+
+  
+  </body>
+</html>
