@@ -12,7 +12,6 @@ var Header = React.createClass({
 						<a className="navbar-brand" href="#"><strong>Theodoro</strong><span className="tagline"> - Pomodoro Meets Todo</span></a>
 					</div>
 					<ul className="nav navbar-nav navbar-right">
-						<li><Link to="/about">About</Link></li>
 						<li><a href="http://twitter.com/jeremeyd"><span className="genericon genericon-twitter"></span></a></li>
 					</ul>
 				</div>

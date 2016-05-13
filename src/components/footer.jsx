@@ -6,7 +6,7 @@ var Footer = React.createClass({
 		return (
 			<nav className="navbar navbar-default navbar-bottom footer navbar-fixed-bottom" role="navigation">
 				<div className="footercontainer">
-					Created by <a href="http://twitter.com/jeremeyd"><span className="genericon genericon-twitter"></span> @JeremeyD</a> - Read more about this project
+					Created by <a href="http://twitter.com/jeremeyd"><span className="genericon genericon-twitter"></span> @JeremeyD</a> - <a href="https://github.com/jeremeylduvall/Theodoro/blob/master/README.md">Read more about this project</a>
 				</div>
 			</nav>
 		);

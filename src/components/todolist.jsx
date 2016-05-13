@@ -23,7 +23,6 @@ var TodoList = React.createClass( {
 				completed: false,
 				editing: false,
 				deleted: false,
-				key: _.uniqueId
 			}
 		);
 	},
@@ -44,9 +43,12 @@ var TodoList = React.createClass( {
 
 	handleAdd: function () {
 		// If the user has entered a value, build a task
-		if ( this.state.taskInput !== null ) {
+		if ( this.state.taskInput !== null && ! this.isDuplicateTask( this.state.taskInput ) ) {
 			this.incompleteTaskHolder.push( this.buildNewTask( this.state.taskInput ) );
-		} else {
+		} else if ( this.isDuplicateTask( this.state.taskInput ) ) {
+			alert( 'Type something original (You already added this)' );
+		}
+		else {
 			alert( 'You have to type something' );
 		}
 
@@ -57,6 +59,22 @@ var TodoList = React.createClass( {
 
 		// Reset the input field
 		this.resetAddField();
+	},
+
+	isDuplicateTask: function( taskInput ) {
+		const pendingTask = taskInput.toLowerCase();
+
+		for ( var i = 0; i < this.incompleteTaskHolder.length ; i++ ) {
+			if ( this.incompleteTaskHolder[i].taskValue.toLowerCase() === pendingTask ) {
+				return true;
+			}
+		}
+
+		for ( var i = 0; i < this.completeTaskHolder.length ; i++ ) {
+			if ( this.completeTaskHolder[i].taskValue.toLowerCase() === pendingTask ) {
+				return true;
+			}
+		}
 	},
 
 	onDelete: function( i ) {
@@ -151,7 +169,7 @@ var TodoList = React.createClass( {
 					return (
 						<Todo
 							taskValue={ task.taskValue }
-							key={ task.uniqueId }
+							key={ i }
 							editing={ task.editing }
 							completed={ task.completed }
 							onComplete={ this.onComplete.bind( this, i ) }
@@ -171,7 +189,7 @@ var TodoList = React.createClass( {
 					return (
 						<Todo
 							taskValue={ task.taskValue }
-							key={ timeselector }
+							key={ i }
 							editing={ task.editing }
 							completed={ task.completed }
 							onComplete={ this.onUncheck.bind( this, i ) }
@@ -200,7 +218,7 @@ var TodoList = React.createClass( {
 						<h4>Completed</h4>
 						{ completeTaskList }
 					</div>
-					<div className="completed col-md-6">
+					<div className="col-md-6">
 						<h4>Incompleted</h4>
 						{ taskList }
 					</div>
