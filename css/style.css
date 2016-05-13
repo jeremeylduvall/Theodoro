@@ -53,6 +53,7 @@ span.genericon.genericon-twitter {
 
 #controls {
 	display: block;
+	padding-top: 30px;
 }
 
 .glyphicon-play, .glyphicon-stop, .glyphicon-pause {
@@ -68,6 +69,10 @@ span.genericon.genericon-twitter {
 
 .intervalMarker {
 	margin-top: 20px;
+}
+
+.timeselector {
+	padding-bottom: 30px;
 }
 
 /* Todo List */

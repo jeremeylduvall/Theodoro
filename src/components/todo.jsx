@@ -1,6 +1,18 @@
 var React = require('react');
 
 var Todo = React.createClass( {
+	propTypes: {
+		taskValue: React.PropTypes.string,
+		editing: React.PropTypes.bool,
+		completed: React.PropTypes.bool,
+		onComplete: React.PropTypes.func,
+		onEdit: React.PropTypes.func,
+		onDelete: React.PropTypes.func,
+		onSave: React.PropTypes.func,
+		onComplete: React.PropTypes.func,
+		editTask: React.PropTypes.func
+	},
+
 	// Fired onChange passing the event into this.props.editTask
 	editTask: function( event ) {
 		this.props.editTask( event.target.value );

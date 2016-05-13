@@ -22,34 +22,40 @@ var TodoList = React.createClass( {
 				taskValue: taskInput,
 				completed: false,
 				editing: false,
-				deleted: false
+				deleted: false,
+				key: _.uniqueId
 			}
 		);
 	},
 
 	resetAddField: function() {
+		// Reset the task field back to null
 		this.setState( {
 			taskInput: null
 		} );
 	},
 
 	handleChange: function( e ) {
+		// Grab the event target and update the taskInput field onChange
 		this.setState( {
 			taskInput: e.target.value
 		} );
 	},
 
 	handleAdd: function () {
+		// If the user has entered a value, build a task
 		if ( this.state.taskInput !== null ) {
 			this.incompleteTaskHolder.push( this.buildNewTask( this.state.taskInput ) );
 		} else {
 			alert( 'You have to type something' );
 		}
 
+		// Update this.state.incompleteTasks with the new task
 		this.setState( {
 			incompleteTasks: this.incompleteTaskHolder
 		} );
 
+		// Reset the input field
 		this.resetAddField();
 	},
 
@@ -145,7 +151,7 @@ var TodoList = React.createClass( {
 					return (
 						<Todo
 							taskValue={ task.taskValue }
-							key={ i }
+							key={ task.uniqueId }
 							editing={ task.editing }
 							completed={ task.completed }
 							onComplete={ this.onComplete.bind( this, i ) }
@@ -165,7 +171,7 @@ var TodoList = React.createClass( {
 					return (
 						<Todo
 							taskValue={ task.taskValue }
-							key={ i }
+							key={ timeselector }
 							editing={ task.editing }
 							completed={ task.completed }
 							onComplete={ this.onUncheck.bind( this, i ) }

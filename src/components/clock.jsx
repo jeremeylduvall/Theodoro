@@ -155,10 +155,10 @@ var Clock = React.createClass( {
 				<div className="btn-group timeselector" role="group" aria-label="...">
 					{ buttonGroup }
 				</div>
-				<br />
-				<br />
 				<div className={"alert alert-success " + ( this.state.resting ? "" : "hidden" ) } role="alert">Nice work! Time to chill for a bit</div>
-				<div id="minutes" >{ this.state.minutes }<span id="label">Minutes</span></div><div id="seconds">{ this.state.seconds }<span id="label">Seconds</span></div>
+				<div>
+					<div id="minutes" >{ this.state.minutes }<span id="label">Minutes</span></div><div id="seconds">{ this.state.seconds }<span id="label">Seconds</span></div>
+				</div>
 				<span id="controls">
 					<div className={ "glyphicon glyphicon-play " + ( this.state.playing ? "hidden" : "" ) } aria-hidden="true" onClick={ this.clockInterval }></div>
 					<div className={ "glyphicon glyphicon-stop " + ( this.state.playing ? "" : "hidden" ) } aria-hidden="true" onClick={ this.stopClock }></div>
